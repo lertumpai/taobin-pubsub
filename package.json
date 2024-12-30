@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "app": "npx ts-node app.ts"
+    "app": "npx ts-node ./app/app.ts"
   },
   "dependencies": {
     "ts-node": "^10.9.2"
