@@ -29,6 +29,10 @@ export class MachineSaleSubscriber implements ISubscriber {
     console.log(`machineId: ${event.machineId()}, current: ${event.getSoldQuantity() + machine.stockLevel}, sold: ${event.getSoldQuantity()}, remaining: ${machine.stockLevel}`)
 
     // check stock level
+    this.checkStockLevel(machine, event)
+  }
+
+  checkStockLevel(machine: any, event: MachineSaleEvent): void {
     const firstTimeLow = machine.stockLevel + event.getSoldQuantity() >= 3
     if (machine.stockLevel < 3 && firstTimeLow) {
       const lowStockEvent = new LowStockWarningEvent(event.machineId())
@@ -62,6 +66,10 @@ export class MachineRefillSubscriber implements ISubscriber {
     console.log(`machineId: ${event.machineId()}, current: ${machine.stockLevel - event.getRefileQuantity()}, refill: ${event.getRefileQuantity()}, remaining: ${machine.stockLevel}`)
 
     // check stock level
+    this.checkStockLevel(machine, event)
+  }
+
+  checkStockLevel(machine: any, event: MachineRefillEvent): void {
     const firstTimeOk = machine.stockLevel - event.getRefileQuantity() < 3
     if (machine.stockLevel >= 3 && firstTimeOk) {
       const stockOkEvent = new StockLevelOkEvent(event.machineId())
