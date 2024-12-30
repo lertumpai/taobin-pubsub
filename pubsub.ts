@@ -18,6 +18,7 @@ export class PublishSubscribeService implements IPublishSubscribeService {
   private subscriber: Map<string, ISubscriber[]> = new Map()
 
   publish(event: IEvent): void {
+    console.log(`Publishing event: ${event.type()}, machine: ${event.machineId()}`)
     const subscribers = this.subscriber.get(event.type())
     subscribers?.forEach(subscriber => subscriber.handle(event))
   }
@@ -38,6 +39,12 @@ export class PublishSubscribeService implements IPublishSubscribeService {
 
     if (!subscribers) return
 
-    this.subscriber.set(type, subscribers.filter(s => s === subscriber))
+    const unsubscribed = subscribers.filter(s => s !== subscriber)
+
+    if (unsubscribed.length === 0) {
+      this.subscriber.delete(type)
+    } else {
+      this.subscriber.set(type, unsubscribed)
+    }
   }
 }
