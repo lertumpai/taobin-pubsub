@@ -1,5 +1,5 @@
 // objects
-import {IEvent} from "./pubsub";
+import {IEvent} from "./pubsub"
 
 export class Machine {
   private _stockLevel = 10

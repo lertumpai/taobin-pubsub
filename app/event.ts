@@ -1,5 +1,5 @@
 // implementations
-import {IEvent} from "./pubsub";
+import {IEvent} from "./pubsub"
 
 export enum MachineEventEnum {
   SALE = 'SALE',

@@ -1,6 +1,6 @@
-import {IEvent, IPublishSubscribeService, ISubscriber} from "./pubsub";
-import {LowStockWarningEvent, MachineEventEnum, MachineRefillEvent, MachineSaleEvent, StockLevelOkEvent} from "./event";
-import {IMachineRepo} from "./machine";
+import {IEvent, IPublishSubscribeService, ISubscriber} from "./pubsub"
+import {LowStockWarningEvent, MachineEventEnum, MachineRefillEvent, MachineSaleEvent, StockLevelOkEvent} from "./event"
+import {IMachineRepo} from "./machine"
 
 export class MachineSaleSubscriber implements ISubscriber {
   private readonly machineRepo: IMachineRepo

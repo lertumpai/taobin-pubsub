@@ -1,7 +1,7 @@
-import {IEvent, IPublishSubscribeService, ISubscriber, PublishSubscribeService} from "./pubsub";
-import {MachineEventEnum, MachineRefillEvent, MachineSaleEvent} from "./event";
-import {MachineRepo} from "./machine";
-import {MachineRefillSubscriber, MachineSaleSubscriber, StockWarningSubscriber} from "./subscriber";
+import {IEvent, IPublishSubscribeService, ISubscriber, PublishSubscribeService} from "./pubsub"
+import {MachineEventEnum, MachineRefillEvent, MachineSaleEvent} from "./event"
+import {MachineRepo} from "./machine"
+import {MachineRefillSubscriber, MachineSaleSubscriber, StockWarningSubscriber} from "./subscriber"
 
 // helpers
 const randomMachine = (): string => {
