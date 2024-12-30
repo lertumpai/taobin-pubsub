@@ -26,6 +26,8 @@ export class MachineSaleSubscriber implements ISubscriber {
       machine.sale(event.getSoldQuantity())
     }
 
+    console.log(`current: ${event.getSoldQuantity() + machine.stockLevel}, sold: ${event.getSoldQuantity()}, remaining: ${machine.stockLevel}`)
+
     // check stock level
     const firstTimeLow = machine.stockLevel + event.getSoldQuantity() >= 3
     if (machine.stockLevel < 3 && firstTimeLow) {
@@ -56,6 +58,8 @@ export class MachineRefillSubscriber implements ISubscriber {
     if (!machine) return
 
     machine.addStock(event.getRefileQuantity())
+
+    console.log(`current: ${machine.stockLevel - event.getRefileQuantity()}, refill: ${event.getRefileQuantity()}, remaining: ${machine.stockLevel}`)
 
     // check stock level
     const firstTimeOk = machine.stockLevel - event.getRefileQuantity() < 3

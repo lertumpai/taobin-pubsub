@@ -28,7 +28,7 @@ export class MachineRefillEvent implements IEvent {
   constructor(private readonly _refill: number, private readonly _machineId: string) {}
 
   machineId(): string {
-    throw new Error("Method not implemented.")
+    return this._machineId
   }
 
   getRefileQuantity(): number {
@@ -36,7 +36,7 @@ export class MachineRefillEvent implements IEvent {
   }
 
   type(): MachineEventEnum {
-    throw MachineEventEnum.REFILL
+    return MachineEventEnum.REFILL
   }
 }
 
@@ -48,7 +48,7 @@ export class StockLevelOkEvent implements IEvent {
   }
 
   type(): MachineEventEnum {
-    throw MachineEventEnum.STOCK_LEVEL_OK
+    return MachineEventEnum.STOCK_LEVEL_OK
   }
 }
 
@@ -60,6 +60,6 @@ export class LowStockWarningEvent implements IEvent {
   }
 
   type(): MachineEventEnum {
-    throw MachineEventEnum.STOCK_LEVEL_LOW
+    return MachineEventEnum.STOCK_LEVEL_LOW
   }
 }

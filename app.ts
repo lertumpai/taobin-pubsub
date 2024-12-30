@@ -42,6 +42,12 @@ const eventGenerator = (): IEvent => {
   pubsub.subscribe(MachineEventEnum.REFILL, machineRefillSubscriber)
   pubsub.subscribe(MachineEventEnum.STOCK_LEVEL_OK, stockWarningSubscriber)
   pubsub.subscribe(MachineEventEnum.STOCK_LEVEL_LOW, stockWarningSubscriber)
+
+  pubsub.publish(new MachineSaleEvent(3, '001'))
+  pubsub.publish(new MachineSaleEvent(3, '001'))
+  pubsub.publish(new MachineSaleEvent(3, '001'))
+  pubsub.publish(new MachineRefillEvent(5, '001'))
+  pubsub.publish(new MachineRefillEvent(5, '001'))
 })()
 
 // // program
