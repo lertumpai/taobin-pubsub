@@ -26,14 +26,12 @@ export class Machine {
   }
 }
 
-export interface IMachineService {
+export interface IMachineRepo {
   create(id: string): void
-  find(id: string): Machine | undefined
-  sell(machineId: string, quantity: number): IEvent | undefined
-  addStock(machineId: string, quantity: number): IEvent | undefined
+  find(id: string): Machine | null
 }
 
-export class MachineService {
+export class MachineRepo implements IMachineRepo {
   private machines: Machine[] = []
 
   create (id: string): void {
@@ -43,31 +41,7 @@ export class MachineService {
     this.machines.push(new Machine(id))
   }
 
-  find (id: string): Machine | undefined {
+  find (id: string): Machine | null {
     return this.machines.find(m => m.id === id)
-  }
-
-  sell (machineId: string, quantity: number): void {
-    const machine = this.machines.find(m => m.id === machineId)
-
-    if (!machine) {
-      throw new Error('Machine not found')
-    }
-
-    if (machine.stockLevel >= quantity) {
-      // sell
-    } else {
-
-    }
-  }
-
-  addStock (machineId: string, quantity: number): void {
-    const machine = this.machines.find(m => m.id === machineId)
-
-    if (!machine) {
-      throw new Error('Machine not found')
-    }
-
-    machine.addStock(quantity)
   }
 }

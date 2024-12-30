@@ -1,4 +1,7 @@
-import {IEvent, IPublishSubscribeService, ISubscriber} from "./pubsub";
+import {IEvent, IPublishSubscribeService, ISubscriber, PublishSubscribeService} from "./pubsub";
+import {MachineEventEnum, MachineRefillEvent, MachineSaleEvent} from "./event";
+import {MachineRepo} from "./machine";
+import {MachineRefillSubscriber, MachineSaleSubscriber, StockWarningSubscriber} from "./subscriber";
 
 // helpers
 const randomMachine = (): string => {
@@ -22,6 +25,24 @@ const eventGenerator = (): IEvent => {
   return new MachineRefillEvent(refillQty, randomMachine())
 }
 
+
+(() => {
+  const pubsub = new PublishSubscribeService()
+  const machineRepo = new MachineRepo()
+
+  machineRepo.create('001')
+  machineRepo.create('002')
+  machineRepo.create('003')
+
+  const machineSaleSubscriber = new MachineSaleSubscriber(machineRepo, pubsub)
+  const machineRefillSubscriber = new MachineRefillSubscriber(machineRepo, pubsub)
+  const stockWarningSubscriber = new StockWarningSubscriber()
+
+  pubsub.subscribe(MachineEventEnum.SALE, machineSaleSubscriber)
+  pubsub.subscribe(MachineEventEnum.REFILL, machineRefillSubscriber)
+  pubsub.subscribe(MachineEventEnum.STOCK_LEVEL_OK, stockWarningSubscriber)
+  pubsub.subscribe(MachineEventEnum.STOCK_LEVEL_LOW, stockWarningSubscriber)
+})()
 
 // // program
 // (async () => {

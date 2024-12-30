@@ -14,7 +14,7 @@ export interface IPublishSubscribeService {
   unsubscribe (type: any, handler: ISubscriber): void
 }
 
-class PublishSubscribeService implements IPublishSubscribeService {
+export class PublishSubscribeService implements IPublishSubscribeService {
   private subscriber: Map<string, ISubscriber[]> = new Map()
 
   publish(event: IEvent): void {
@@ -23,10 +23,11 @@ class PublishSubscribeService implements IPublishSubscribeService {
   }
 
   subscribe(type: string, subscriber: ISubscriber): void {
-    const subscribers = this.subscriber.get(type)
+    let subscribers = this.subscriber.get(type)
 
     if (!subscribers) {
-      this.subscriber.set(type, [])
+      subscribers = []
+      this.subscriber.set(type, subscribers)
     }
 
     subscribers.push(subscriber)

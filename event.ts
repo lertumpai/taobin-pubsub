@@ -2,9 +2,10 @@
 import {IEvent} from "./pubsub";
 
 export enum MachineEventEnum {
-  SALE = 'sale',
-  REFILL = 'refill',
-  NOT_ENOUGH_STOCK = 'not_enough_stock'
+  SALE = 'SALE',
+  REFILL = 'REFILL',
+  STOCK_LEVEL_LOW = 'STOCK_LEVEL_LOW',
+  STOCK_LEVEL_OK = 'STOCK_LEVEL_OK'
 }
 
 export class MachineSaleEvent implements IEvent {
@@ -30,7 +31,35 @@ export class MachineRefillEvent implements IEvent {
     throw new Error("Method not implemented.")
   }
 
+  getRefileQuantity(): number {
+    return this._refill
+  }
+
   type(): MachineEventEnum {
     throw MachineEventEnum.REFILL
+  }
+}
+
+export class StockLevelOkEvent implements IEvent {
+  constructor(private readonly _machineId: string) {}
+
+  machineId(): string {
+    return this._machineId
+  }
+
+  type(): MachineEventEnum {
+    throw MachineEventEnum.STOCK_LEVEL_OK
+  }
+}
+
+export class LowStockWarningEvent implements IEvent {
+  constructor(private readonly _machineId: string) {}
+
+  machineId(): string {
+    return this._machineId
+  }
+
+  type(): MachineEventEnum {
+    throw MachineEventEnum.STOCK_LEVEL_LOW
   }
 }
