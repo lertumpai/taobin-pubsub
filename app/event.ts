@@ -31,7 +31,7 @@ export class MachineRefillEvent implements IEvent {
     return this._machineId
   }
 
-  getRefileQuantity(): number {
+  getRefillQuantity(): number {
     return this._refill
   }
 

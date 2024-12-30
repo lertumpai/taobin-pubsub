@@ -24,9 +24,10 @@ export class MachineSaleSubscriber implements ISubscriber {
 
     if (machine.stockLevel >= event.getSoldQuantity()) {
       machine.sale(event.getSoldQuantity())
+      console.log(`machineId: ${event.machineId()}, current: ${event.getSoldQuantity() + machine.stockLevel}, sold: ${event.getSoldQuantity()}, remaining: ${machine.stockLevel}`)
+    } else {
+      console.log(`machineId: ${event.machineId()}, remaining: ${machine.stockLevel}, The stock is not enough`)
     }
-
-    console.log(`machineId: ${event.machineId()}, current: ${event.getSoldQuantity() + machine.stockLevel}, sold: ${event.getSoldQuantity()}, remaining: ${machine.stockLevel}`)
 
     // check stock level
     this.checkStockLevel(machine, event)
@@ -54,23 +55,22 @@ export class MachineRefillSubscriber implements ISubscriber {
   }
 
   handle(event: MachineRefillEvent): void {
-    if (event.getRefileQuantity() < 0) {
+    if (event.getRefillQuantity() < 0) {
       throw new Error('Invalid quantity')
     }
 
     const machine = this.machineRepo.find(event.machineId())
     if (!machine) return
 
-    machine.addStock(event.getRefileQuantity())
-
-    console.log(`machineId: ${event.machineId()}, current: ${machine.stockLevel - event.getRefileQuantity()}, refill: ${event.getRefileQuantity()}, remaining: ${machine.stockLevel}`)
+    machine.addStock(event.getRefillQuantity())
+    console.log(`machineId: ${event.machineId()}, current: ${machine.stockLevel - event.getRefillQuantity()}, refill: ${event.getRefillQuantity()}, remaining: ${machine.stockLevel}`)
 
     // check stock level
     this.checkStockLevel(machine, event)
   }
 
   checkStockLevel(machine: any, event: MachineRefillEvent): void {
-    const firstTimeOk = machine.stockLevel - event.getRefileQuantity() < 3
+    const firstTimeOk = machine.stockLevel - event.getRefillQuantity() < 3
     if (machine.stockLevel >= 3 && firstTimeOk) {
       const stockOkEvent = new StockLevelOkEvent(event.machineId())
       this.pubSubService.publish(stockOkEvent)
