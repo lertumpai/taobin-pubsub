@@ -1,4 +1,6 @@
 // objects
+import {IEvent} from "./pubsub";
+
 export class Machine {
   private _stockLevel = 10
   private readonly _id: string
@@ -18,12 +20,17 @@ export class Machine {
   sale(quantity: number): void {
     this._stockLevel -= quantity
   }
+
+  addStock(quantity: number): void {
+    this._stockLevel += quantity
+  }
 }
 
 export interface IMachineService {
   create(id: string): void
   find(id: string): Machine | undefined
-  sell(machineId: string, quantity: number): void
+  sell(machineId: string, quantity: number): IEvent | undefined
+  addStock(machineId: string, quantity: number): IEvent | undefined
 }
 
 export class MachineService {
@@ -52,5 +59,15 @@ export class MachineService {
     } else {
 
     }
+  }
+
+  addStock (machineId: string, quantity: number): void {
+    const machine = this.machines.find(m => m.id === machineId)
+
+    if (!machine) {
+      throw new Error('Machine not found')
+    }
+
+    machine.addStock(quantity)
   }
 }

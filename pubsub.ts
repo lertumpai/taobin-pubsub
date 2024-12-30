@@ -11,20 +11,32 @@ export interface ISubscriber {
 export interface IPublishSubscribeService {
   publish (event: IEvent): void
   subscribe (type: any, handler: ISubscriber): void
-  // unsubscribe ( /* Question 2 - build this feature */ )
+  unsubscribe (type: any, handler: ISubscriber): void
 }
 
-class PublishSubscribeService<t> implements IPublishSubscribeService {
-  private subscriber: Map<t, ISubscriber> = new Map()
+class PublishSubscribeService implements IPublishSubscribeService {
+  private subscriber: Map<string, ISubscriber[]> = new Map()
 
   publish(event: IEvent): void {
-    const subscriber = this.subscriber.get(event.type())
-    if (subscriber) {
-      subscriber.handle(event)
-    }
+    const subscribers = this.subscriber.get(event.type())
+    subscribers?.forEach(subscriber => subscriber.handle(event))
   }
 
-  subscribe(type: t, handler: ISubscriber): void {
-    this.subscriber.set(type, handler)
+  subscribe(type: string, subscriber: ISubscriber): void {
+    const subscribers = this.subscriber.get(type)
+
+    if (!subscribers) {
+      this.subscriber.set(type, [])
+    }
+
+    subscribers.push(subscriber)
+  }
+
+  unsubscribe(type: string, subscriber: ISubscriber): void {
+    const subscribers = this.subscriber.get(type)
+
+    if (!subscribers) return
+
+    this.subscriber.set(type, subscribers.filter(s => s === subscriber))
   }
 }

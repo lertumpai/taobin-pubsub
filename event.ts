@@ -7,7 +7,7 @@ export enum MachineEventEnum {
   NOT_ENOUGH_STOCK = 'not_enough_stock'
 }
 
-class MachineSaleEvent implements IEvent {
+export class MachineSaleEvent implements IEvent {
   constructor(private readonly _sold: number, private readonly _machineId: string) {}
 
   machineId(): string {
@@ -23,7 +23,7 @@ class MachineSaleEvent implements IEvent {
   }
 }
 
-class MachineRefillEvent implements IEvent {
+export class MachineRefillEvent implements IEvent {
   constructor(private readonly _refill: number, private readonly _machineId: string) {}
 
   machineId(): string {

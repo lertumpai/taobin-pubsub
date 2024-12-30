@@ -1,17 +1,21 @@
 import {IEvent, IPublishSubscribeService, ISubscriber} from "./pubsub";
+import {IMachineService} from "./machine";
+import {MachineSaleEvent} from "./event";
 
 class MachineSaleSubscriber implements ISubscriber {
-  private machines: Machine[]
+  private readonly machineService: IMachineService
+  private readonly pubSubService: IPublishSubscribeService
 
-  constructor (machines: Machine[]) {
-    this.machines = machines
+  constructor (
+    machineService: IMachineService,
+    pubSubService: IPublishSubscribeService
+  ) {
+    this.machineService = machineService
+    this.pubSubService = pubSubService
   }
 
   handle(event: MachineSaleEvent): void {
-    const machine = this.machines.find(m => m.id === event.machineId())
-    if (machine) {
-      machine.sale(event.getSoldQuantity())
-    }
+    this.machineService.sell(event.machineId(), event.getSoldQuantity())
   }
 }
 
